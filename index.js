@@ -41,7 +41,18 @@ async function run() {
             const id = req.params.id;
             console.log(id);
             const filter = { _id: ObjectId(id) };
-            const result = await productCollection.updateOne(filter, { $inc: { quantity: -2 } });
+            const result = await productCollection.updateOne(filter, { $inc: { quantity: -1 } });
+            res.send(result);
+        })
+
+        //increasing one products quantity
+        app.put('/increasequantity/:id', async (req, res) => {
+            const id = req.params.id;
+            const units = req.body.unitNumber;
+            // console.log('id', id);
+            // console.log('unitNumber', units, typeof (units));
+            const filter = { _id: ObjectId(id) };
+            const result = await productCollection.updateOne(filter, { $inc: { quantity: units } });
             res.send(result);
         })
     }
