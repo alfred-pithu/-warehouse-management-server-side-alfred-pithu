@@ -41,7 +41,8 @@ async function run() {
             const id = req.params.id;
             console.log(id);
             const filter = { _id: ObjectId(id) };
-            const result = await productCollection.updateOne(filter, { $inc: { quantity: -1 } });
+            const options = { upsert: true };
+            const result = await productCollection.updateOne(filter, { $inc: { quantity: -1 } }, options);
             res.send(result);
         })
 
@@ -53,6 +54,16 @@ async function run() {
             // console.log('unitNumber', units, typeof (units));
             const filter = { _id: ObjectId(id) };
             const result = await productCollection.updateOne(filter, { $inc: { quantity: units } });
+            res.send(result);
+        })
+
+        //deleting single item 
+        app.delete('/deleteitem/:id', async (req, res) => {
+            const id = req.params.id;
+            // console.log(id);
+            const query = { _id: ObjectId(id) }
+            const result = await productCollection.deleteOne(query)
+
             res.send(result);
         })
     }
