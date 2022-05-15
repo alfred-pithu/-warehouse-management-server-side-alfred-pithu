@@ -30,7 +30,6 @@ async function run() {
         //getting one product details from server
         app.get('/singleItem/:id', async (req, res) => {
             const id = req.params.id;
-            // console.log(id);
             const query = { _id: ObjectId(id) };
             const result = await productCollection.findOne(query);
             res.send(result);
@@ -39,7 +38,6 @@ async function run() {
         //decreasing one product's quantity
         app.put('/decreasequantity/:id', async (req, res) => {
             const id = req.params.id;
-            console.log(id);
             const filter = { _id: ObjectId(id) };
             const options = { upsert: true };
             const result = await productCollection.updateOne(filter, { $inc: { quantity: -1 } }, options);
@@ -50,8 +48,6 @@ async function run() {
         app.put('/increasequantity/:id', async (req, res) => {
             const id = req.params.id;
             const units = req.body.unitNumber;
-            // console.log('id', id);
-            // console.log('unitNumber', units, typeof (units));
             const filter = { _id: ObjectId(id) };
             const result = await productCollection.updateOne(filter, { $inc: { quantity: units } });
             res.send(result);
@@ -60,17 +56,14 @@ async function run() {
         //deleting single item 
         app.delete('/deleteitem/:id', async (req, res) => {
             const id = req.params.id;
-            // console.log(id);
             const query = { _id: ObjectId(id) }
             const result = await productCollection.deleteOne(query)
-
             res.send(result);
         })
 
         // adding new items 
         app.post('/addnewitem', async (req, res) => {
             const newItem = req.body;
-            console.log('new item', newItem);
             const result = await productCollection.insertOne(newItem);
             res.send(result)
         })
@@ -78,7 +71,6 @@ async function run() {
         //get items added by certain user
         app.get('/myitems', async (req, res) => {
             const email = req.query.email;
-            console.log(email);
             const query = { email: email }
             const cursor = productCollection.find(query)
             const result = await cursor.toArray();
@@ -105,6 +97,3 @@ app.get('/', (req, res) => {
 app.listen(port, () => {
     console.log('Server Running on Port', port)
 })
-
-// inventory
-// WqX9gj4KoNdFiTfc
